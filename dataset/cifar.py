@@ -10,79 +10,12 @@ from .randaugment import RandAugmentMC
 
 logger = logging.getLogger(__name__)
 
-# Change this to the correct directory of drd dataset
-# Training images should be in the folder train_images
-# and test images should be in the folder test_images
-# Train labels should be in the file train_labels.csv
-# There should be a file name test_images.csv
-# All these files/folders should be in drd_dir
-# drd_dir = 'data/drd/'
-drd_dir = '/content/gdrive/MyDrive/drd/'
-
-drd_mean = ([0.4560, 0.3106, 0.2178])
-drd_std = ([0.2766, 0.2001, 0.1654])
 cifar10_mean = (0.4914, 0.4822, 0.4465)
 cifar10_std = (0.2471, 0.2435, 0.2616)
 cifar100_mean = (0.5071, 0.4867, 0.4408)
 cifar100_std = (0.2675, 0.2565, 0.2761)
 normal_mean = (0.5, 0.5, 0.5)
 normal_std = (0.5, 0.5, 0.5)
-
-# Resize Image
-w = 100
-h = 100
-
-def get_drd(args, root):
-    transform_labeled = transforms.Compose([
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomCrop(size=(h, w),
-                              padding=int(64*0.125),
-                              padding_mode='reflect'),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=drd_mean, std=drd_std)
-    ])
-    transform_val = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize(mean=drd_mean, std=drd_std)
-    ])
-
-    # Read the drd training data
-    train_data = []
-    train_labels = []
-    
-    with open(os.path.join(drd_dir, 'train_labels.csv')) as csv_file:
-        reader = csv.DictReader(csv_file, delimiter=',')
-
-        for row in reader:
-            img_id = row.get('id_code')
-            train_folder = os.path.join(drd_dir, 'train_images')
-            img = Image.open(os.path.join(train_folder, img_id + '.jpg'))
-            img_arr = np.asarray(img.resize((w, h)))
-            train_data.append(img_arr)
-            train_labels.append(int(row.get('diagnosis')))
-
-    # Copy last 500 images of training data as test data
-    test_data = train_data[-500:]
-    test_labels = train_labels[-500:]
-
-    # Update train data accordingly
-    train_data = train_data[:-500]
-    train_labels = train_labels[:-500]           
-
-    print('Training data is successfully loaded!')
-
-    train_labeled_idxs, train_unlabeled_idxs = x_u_split(args, train_labels)
-
-    train_labeled_dataset = DRD_SSL(train_data, train_labels, train_labeled_idxs,  transform=transform_labeled)
-
-    train_unlabeled_dataset = DRD_SSL(train_data, train_labels, train_unlabeled_idxs, 
-        transform=TransformFixMatch2(mean=drd_mean, std=drd_std))
-
- 
-
-    test_dataset = DRD_SSL(test_data, test_labels, None, transform=transform_val)
-
-    return train_labeled_dataset, train_unlabeled_dataset, test_dataset
 
 
 def get_cifar10(args, root):
