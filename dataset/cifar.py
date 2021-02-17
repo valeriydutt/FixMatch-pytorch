@@ -32,8 +32,8 @@ normal_mean = (0.5, 0.5, 0.5)
 normal_std = (0.5, 0.5, 0.5)
 
 # Resize Image
-w = 150
-h = 150
+w = 100
+h = 100
 
 
 def get_aptos(args, root):
