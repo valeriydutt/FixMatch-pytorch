@@ -200,14 +200,14 @@ def main():
             args.model_width = 64
 
     elif args.dataset == 'drd':
-    args.num_classes = 5
-    if args.arch == 'wideresnet':
-        args.model_depth = 28
-        args.model_width = 2
-    elif args.arch == 'resnext':
-        args.model_cardinality = 4
-        args.model_depth = 28
-        args.model_width = 4
+        args.num_classes = 5
+        if args.arch == 'wideresnet':
+            args.model_depth = 28
+            args.model_width = 2
+        elif args.arch == 'resnext':
+            args.model_cardinality = 4
+            args.model_depth = 28
+            args.model_width = 4
 
     labeled_dataset, unlabeled_dataset, test_dataset = DATASET_GETTERS[args.dataset](
         args, './data')
