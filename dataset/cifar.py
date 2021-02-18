@@ -4,8 +4,8 @@ import os
 import csv
 
 import numpy as np
-from PIL import Image
-from torchvision import datasets
+from PIL import Image, ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = Truefrom torchvision import datasets
 from torchvision import transforms
 
 from .randaugment import RandAugmentMC
