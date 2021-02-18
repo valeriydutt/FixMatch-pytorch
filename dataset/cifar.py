@@ -196,6 +196,29 @@ class TransformFixMatch(object):
         strong = self.strong(x)
         return self.normalize(weak), self.normalize(strong)
 
+class DRD_SSL(object):
+    def __init__(self, train_data, train_labels, indexs, 
+                 transform=None):
+        self.transform = transform
+        self.data = np.array(train_data)
+        self.targets = np.array(train_labels) 
+
+        if indexs is not None:
+            self.data = self.data[indexs]
+            self.targets = self.targets[indexs]
+
+    def __getitem__(self, index):
+        img, target = self.data[index], self.targets[index]
+        # img = Image.fromarray(img)
+        img = Image.fromarray((img))
+
+        if self.transform is not None:
+            img = self.transform(img)
+
+        return img, target
+
+    def __len__(self):
+        return len(self.targets)
 
 class CIFAR10SSL(datasets.CIFAR10):
     def __init__(self, root, indexs, train=True,
