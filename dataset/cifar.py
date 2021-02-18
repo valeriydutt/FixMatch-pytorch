@@ -5,7 +5,8 @@ import csv
 
 import numpy as np
 from PIL import Image, ImageFile
-ImageFile.LOAD_TRUNCATED_IMAGES = Truefrom torchvision import datasets
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+from torchvision import datasets
 from torchvision import transforms
 
 from .randaugment import RandAugmentMC
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 # There should be a file name test_images.csv
 # All these files/folders should be in drd_dir
 # drd_dir = 'data/drd/'
-drd_dir = '/content/gdrive/MyDrive/'
+drd_dir = '/content/drive/MyDrive/'
 
 drd_mean = ([0.4560, 0.3106, 0.2178])
 drd_std = ([0.2766, 0.2001, 0.1654])
