@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 # There should be a file name test_images.csv
 # All these files/folders should be in drd_dir
 # drd_dir = 'data/drd/'
-drd_dir = '/content/drive/MyDrive/'
+drd_dir = '/content/drive/MyDrive/aptos/'
 
 drd_mean = ([0.4560, 0.3106, 0.2178])
 drd_std = ([0.2766, 0.2001, 0.1654])
@@ -53,13 +53,13 @@ def get_drd(args, root):
     train_data = []
     train_labels = []
     
-    with open(os.path.join(drd_dir, 'train_labels.csv')) as csv_file:
+    with open(os.path.join(drd_dir, 'train.csv')) as csv_file:
         reader = csv.DictReader(csv_file, delimiter=',')
 
         for row in reader:
             img_id = row.get('id_code')
-            train_folder = os.path.join(drd_dir, 'train')
-            img = Image.open(os.path.join(train_folder, img_id + '.jpeg'))
+            train_folder = os.path.join(drd_dir, 'train_resized')
+            img = Image.open(os.path.join(train_folder, img_id + '.png'))
             img_arr = np.asarray(img.resize((w, h)))
             train_data.append(img_arr)
             train_labels.append(int(row.get('diagnosis')))
